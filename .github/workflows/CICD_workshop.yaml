@@ -1,8 +1,6 @@
 name: CICD workshop
 on:
-    push:
-      branches:
-        - main
+    push
 jobs:
     CICD_workshop:
         runs-on: ubuntu-latest
@@ -16,10 +14,15 @@ jobs:
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
               with:
-                scan-type: 'repository'
+                scan-type: 'fs'
+                scan-ref: '.'
                 format: 'table'
                 exit-code: '1'
-                ignore-unfixed: true
-                vuln-type: 'os,library'
                 severity: 'HIGH'
-                output: ${{secrets.TEST_SUBMISSION}}
+                trivy-config: CICD_workshop.yaml
+                
+            - name: send message
+              id: send_message
+              uses: slackapi/slack-github-action@v1.24.0
+              env:
+                SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
