@@ -1,0 +1,11 @@
+{
+  "name": "fortunes",
+  "version": "1.0.0",
+  "description": "| Option    | Description                        | Default       | |-----------|------------------------------------|---------------| |`--fortune`| Fortune file, one fortune per line | ./fortune.txt | |`--static` | Static assets directory            | ./static      | |`--port`   | Port to bind to                    | 3000          |",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
