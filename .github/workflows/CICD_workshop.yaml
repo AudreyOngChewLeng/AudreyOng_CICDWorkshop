@@ -1,0 +1,9 @@
+name: CICD workshop
+on: 
+    push
+jobs:
+    CICD_workshop:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 
