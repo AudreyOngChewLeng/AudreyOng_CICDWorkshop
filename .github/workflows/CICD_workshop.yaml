@@ -17,7 +17,9 @@ jobs:
               uses: aquasecurity/trivy-action@master
               with:
                 scan-type: 'repository'
-                scan-ref: '.'
+                format: 'table'
+                exit-code: '1'
+                ignore-unfixed: true
+                vuln-type: 'os,library'
                 severity: 'HIGH'
-                format: 'sarif'
                 output: ${{secrets.TEST_SUBMISSION}}
