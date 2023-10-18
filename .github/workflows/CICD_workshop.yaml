@@ -1,9 +1,22 @@
 name: CICD workshop
-on: 
-    push
+on:
+    push:
+      branches:
+        - main
 jobs:
     CICD_workshop:
         runs-on: ubuntu-latest
 
         steps:
-            - name: 
+            - name: checkout test
+              id: checkout_test
+              uses: actions/checkout@v4
+            
+            - name: run trivy scanner
+              id: run_trivy_scanner
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: 'fs'
+                scan-ref: '.'
+                severity: 'HIGH'
+                output: ${{secrets.TEST_SUBMISSION}}

@@ -1,3 +1,4 @@
 *.secret
 *password*
 temp.*
+cosign.pub
