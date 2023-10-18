@@ -16,7 +16,8 @@ jobs:
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
               with:
-                scan-type: 'fs'
+                scan-type: 'repository'
                 scan-ref: '.'
                 severity: 'HIGH'
+                format: 'sarif'
                 output: ${{secrets.TEST_SUBMISSION}}
