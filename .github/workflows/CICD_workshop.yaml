@@ -1,6 +1,9 @@
 name: CICD workshop
 on:
-    push
+    push:
+      branches:
+          - 'v[0-9]+.[0-9]+'
+
 jobs:
     CICD_workshop:
         runs-on: ubuntu-latest
@@ -9,7 +12,7 @@ jobs:
             - name: checkout test
               id: checkout_test
               uses: actions/checkout@v2
-            
+
             - name: run trivy scanner
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
@@ -17,20 +20,24 @@ jobs:
                 scan-type: 'fs'
                 ignore-unfixed: true
                 format: 'table'
-                output: 'trivy-report2.txt'
+                output: 'trivy-report.txt'
                 severity: 'HIGH'
+                exit-code: '1'
+
+            - name: list directory
+              id: list_directory
+              run: echo "$(ls -l)"
                        
-            # - name: send trivy report
-            #   id: send_trivy_report
-            #   uses: MeilCli/slack-upload-file@v3
-            #   with:
-            #     slack_token: ${{ secrets.SLACK_TOKEN }}
-            #     content: 'file content'
-            #     file_path: 
-            #     file_type: 'text'
-            #     file_name: 'trivy-report.txt'
-            #     title: 'trivy-report'
-            #     initial_comment: 'test'
+            - name: send trivy report
+              id: send_trivy_report
+              uses: MeilCli/slack-upload-file@v3
+              with:
+                slack_token: ${{ secrets.SLACK_TOKEN }}
+                content: 'file content'
+                file_type: 'text'
+                file_name: 'trivy-report.txt'
+                title: 'trivy-report'
+                initial_comment: 'test file'
 
             - name: send to slack
               id: send_to_slack
@@ -40,5 +47,5 @@ jobs:
                 SLACK_CHANNEL: general
                 SLACK_COLOR: ${{ job.status }}
                 SLACK_USERNAME: TestingName
-                SLACK_TITLE: Image build and signed
-                SLACK_MESSAGE: "Name: Testing \n Matriculation Number: TestingABC \n Git: :) \n Image: :)"
+                SLACK_TITLE: Scan fail
+                SLACK_MESSAGE: "Fail trivy scan"
