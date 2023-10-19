@@ -13,6 +13,17 @@ jobs:
               id: checkout_test
               uses: actions/checkout@v2
 
+            - name: send to slack
+              id: send_to_slack
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+                SLACK_CHANNEL: general
+                SLACK_COLOR: ${{ job.status }}
+                SLACK_USERNAME: TestingName
+                SLACK_TITLE: Scan fail - Audrey
+                SLACK_MESSAGE: "Fail trivy scan"
+
             - name: run trivy scanner
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
@@ -38,14 +49,3 @@ jobs:
                 file_name: 'trivy-report.txt'
                 title: 'trivy-report'
                 initial_comment: 'test file'
-
-            - name: send to slack
-              id: send_to_slack
-              uses: rtCamp/action-slack-notify@v2
-              env:
-                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-                SLACK_CHANNEL: general
-                SLACK_COLOR: ${{ job.status }}
-                SLACK_USERNAME: TestingName
-                SLACK_TITLE: Scan fail
-                SLACK_MESSAGE: "Fail trivy scan"
