@@ -43,7 +43,7 @@ jobs:
                 SLACK_COLOR: ${{ job.status }}
                 SLACK_USERNAME: TestingName
                 SLACK_TITLE: Image build and signed
-                SLACK_MESSAGE: "Name: Testing \n Matriculation Number: TestingABC \n Git: <> \n Image: <>"
+                SLACK_MESSAGE: "Fail trivy scan, see upload report"
 
             - name: send trivy report
               id: send_trivy_report
@@ -53,4 +53,4 @@ jobs:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
                 file_path: 'trivy-report.txt'
-                initial_comment: 'test'            
+                initial_comment: 'Scan report by Audrey'            
