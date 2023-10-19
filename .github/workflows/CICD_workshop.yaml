@@ -33,6 +33,19 @@ jobs:
               if: always()
               run: echo "$(ls -l)"
 
+            - name: send to slack
+              id: send_to_slack
+              if: success()
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+              with:
+                SLACK_CHANNEL: general
+                SLACK_COLOR: ${{ job.status }}
+                SLACK_USERNAME: TestingName
+                SLACK_TITLE: Image build and signed
+                SLACK_MESSAGE: "Name: Testing \n Matriculation Number: TestingABC \n Git: <> \n Image: <>"
+
             - name: send trivy report
               id: send_trivy_report
               if: always()
@@ -41,17 +54,4 @@ jobs:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
                 file_path: 'trivy-report.txt'
-                initial_comment: 'test'
-
-            # - name: send to slack
-            #   id: send_to_slack
-            #   if: success()
-            #   uses: rtCamp/action-slack-notify@v2
-            #   env:
-            #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            #   with:
-            #     SLACK_CHANNEL: general
-            #     SLACK_COLOR: ${{ job.status }}
-            #     SLACK_USERNAME: TestingName
-            #     SLACK_TITLE: Test
-            #     SLACK_MESSAGE: "Test"
+                initial_comment: 'test'            
