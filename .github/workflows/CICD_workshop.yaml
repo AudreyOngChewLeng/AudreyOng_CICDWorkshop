@@ -32,14 +32,17 @@ jobs:
             - name: send trivy report
               id: send_trivy_report
               if: always()
-              uses: MeilCli/slack-upload-file@v2
-              with:
-                slack_token: ${{ secrets.SLACK_TOKEN }}
-                content: 'file content'
-                file_type: 'text'
-                file_name: 'trivy-report.txt'
-                title: 'trivy-report'
-                initial_comment: 'trivy-report'
+              uses: adrey/slack-file-upload-action@master
+              # with:
+              #   slack_token: ${{ secrets.SLACK_TOKEN }}
+              #   content: 'file content'
+              #   file_type: 'text'
+              #   file_name: 'trivy-report.txt'
+              #   title: 'trivy-report'
+              #   initial_comment: 'trivy-report'
+              with: 
+                  token: ${{ secrets.SLACK_TOKEN }}
+                  path: trivy-report.txt
 
             - name: send to slack
               id: send_to_slack
