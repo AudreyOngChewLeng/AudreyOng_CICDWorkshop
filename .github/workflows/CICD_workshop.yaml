@@ -8,21 +8,37 @@ jobs:
         steps:
             - name: checkout test
               id: checkout_test
-              uses: actions/checkout@v4
+              uses: actions/checkout@v2
             
             - name: run trivy scanner
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
               with:
                 scan-type: 'fs'
-                scan-ref: '.'
+                ignore-unfixed: true
                 format: 'table'
-                exit-code: '1'
+                output: 'trivy-report2.txt'
                 severity: 'HIGH'
-                trivy-config: CICD_workshop.yaml
-                
-            - name: send message
-              id: send_message
-              uses: slackapi/slack-github-action@v1.24.0
+                       
+            # - name: send trivy report
+            #   id: send_trivy_report
+            #   uses: MeilCli/slack-upload-file@v3
+            #   with:
+            #     slack_token: ${{ secrets.SLACK_TOKEN }}
+            #     content: 'file content'
+            #     file_path: 
+            #     file_type: 'text'
+            #     file_name: 'trivy-report.txt'
+            #     title: 'trivy-report'
+            #     initial_comment: 'test'
+
+            - name: send to slack
+              id: send_to_slack
+              uses: rtCamp/action-slack-notify@v2
               env:
-                SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+                SLACK_CHANNEL: general
+                SLACK_COLOR: ${{ job.status }}
+                SLACK_USERNAME: TestingName
+                SLACK_TITLE: Image build and signed
+                SLACK_MESSAGE: "Name: Testing \n Matriculation Number: TestingABC \n Git: :) \n Image: :)"
