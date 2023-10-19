@@ -42,7 +42,6 @@ jobs:
 
             - name: send to slack
               id: send_to_slack
-              if: success()
               uses: rtCamp/action-slack-notify@v2
               env:
                 SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
