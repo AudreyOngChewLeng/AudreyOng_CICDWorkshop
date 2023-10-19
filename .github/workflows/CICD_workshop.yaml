@@ -13,20 +13,8 @@ jobs:
               id: checkout_test
               uses: actions/checkout@v2
 
-            - name: send to slack
-              id: send_to_slack
-              uses: rtCamp/action-slack-notify@v2
-              env:
-                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-                SLACK_CHANNEL: general
-                SLACK_COLOR: ${{ job.status }}
-                SLACK_USERNAME: TestingName
-                SLACK_TITLE: Scan fail - Audrey
-                SLACK_MESSAGE: "Fail trivy scan"
-
             - name: run trivy scanner
               id: run_trivy_scanner
-              if: always()
               uses: aquasecurity/trivy-action@master
               with:
                 scan-type: 'fs'
@@ -40,7 +28,19 @@ jobs:
               id: list_directory
               if: always()
               run: echo "$(ls -l)"
-                       
+
+            - name: send to slack
+              id: send_to_slack
+              if: always()
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+                SLACK_CHANNEL: general
+                SLACK_COLOR: ${{ job.status }}
+                SLACK_USERNAME: TestingName
+                SLACK_TITLE: Scan fail
+                SLACK_MESSAGE: "Fail trivy scan"
+
             - name: send trivy report
               id: send_trivy_report
               if: always()
