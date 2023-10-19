@@ -26,6 +26,7 @@ jobs:
 
             - name: run trivy scanner
               id: run_trivy_scanner
+              if: always()
               uses: aquasecurity/trivy-action@master
               with:
                 scan-type: 'fs'
@@ -37,10 +38,12 @@ jobs:
 
             - name: list directory
               id: list_directory
+              if: always()
               run: echo "$(ls -l)"
                        
             - name: send trivy report
               id: send_trivy_report
+              if: always()
               uses: MeilCli/slack-upload-file@v3
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
