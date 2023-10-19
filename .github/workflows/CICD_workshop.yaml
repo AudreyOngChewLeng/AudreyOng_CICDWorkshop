@@ -33,8 +33,6 @@ jobs:
               if: always()
               run: echo "$(ls -l)"
 
-            - run: 'echo ${{ github.event.inputs.message }} > message.txt'
-
             - name: send trivy report
               id: send_trivy_report
               if: always()
@@ -46,8 +44,6 @@ jobs:
                 file_name: 'hello.txt'
                 title: 'hello'
                 initial_comment: 'hello'
-
-            - run: 'echo ${{ fromJson(steps.message.outputs.response).files[0].file.permalink }}'
 
             # - name: send to slack
             #   id: send_to_slack
