@@ -11,8 +11,8 @@ jobs:
         steps:
             - name: checkout test
               id: checkout_test
-              uses: actions/checkout@v2
-
+              uses: actions/checkout@v4
+              
             - name: run trivy scanner
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
@@ -28,27 +28,26 @@ jobs:
               id: list_directory
               if: always()
               run: echo "$(ls -l)"
-
-            - name: send to slack
-              id: send_to_slack
-              if: always()
-              uses: rtCamp/action-slack-notify@v2
-              env:
-                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-                SLACK_CHANNEL: general
-                SLACK_COLOR: ${{ job.status }}
-                SLACK_USERNAME: TestingName
-                SLACK_TITLE: Scan fail
-                SLACK_MESSAGE: "Fail trivy scan"
-
+            
             - name: send trivy report
               id: send_trivy_report
-              if: always()
-              uses: MeilCli/slack-upload-file@v3
+              if: success()
+              uses: MeilCli/slack-upload-file@v2
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 content: 'file content'
                 file_type: 'text'
                 file_name: 'trivy-report.txt'
-                title: 'trivy-report'
                 initial_comment: 'test file'
+
+            - name: send to slack
+              id: send_to_slack
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+              with:
+                SLACK_CHANNEL: general
+                SLACK_COLOR: ${{ job.status }}
+                SLACK_USERNAME: TestingName
+                SLACK_TITLE: Test
+                SLACK_MESSAGE: "Test"
