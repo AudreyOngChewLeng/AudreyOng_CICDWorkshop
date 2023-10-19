@@ -36,7 +36,6 @@ jobs:
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 content: 'file content'
-                file_type: 'text'
                 file_name: 'trivy-report.txt'
                 title: 'trivy-report'
                 initial_comment: 'trivy-report'
