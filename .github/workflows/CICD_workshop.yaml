@@ -13,21 +13,25 @@ jobs:
               id: checkout_test
               uses: actions/checkout@v4
 
-            - name: run trivy scanner
-              id: run_trivy_scanner
-              uses: aquasecurity/trivy-action@master
-              with:
-                scan-type: 'fs'
-                ignore-unfixed: true
-                format: 'table'
-                output: 'trivy-report.txt'
-                severity: 'HIGH'
-                exit-code: '1'
+            # - name: run trivy scanner
+            #   id: run_trivy_scanner
+            #   uses: aquasecurity/trivy-action@master
+            #   with:
+            #     scan-type: 'fs'
+            #     ignore-unfixed: true
+            #     format: 'table'
+            #     output: 'trivy-report.txt'
+            #     severity: 'HIGH'
+            #     exit-code: '1'
 
-            # - name: list directory
-            #   id: list_directory
-            #   if: always()
-            #   run: echo "$(ls -l)"
+            - name: trial run
+              id: trial_run
+              run: echo "hello" > hello.txt
+
+            - name: list directory
+              id: list_directory
+              if: always()
+              run: echo "$(ls -l)"
 
             - name: send trivy report
               id: send_trivy_report
@@ -36,18 +40,20 @@ jobs:
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 content: 'file content'
-                file_name: 'trivy-report.txt'
-                title: 'trivy-report'
-                initial_comment: 'trivy-report'
-
-            - name: send to slack
-              id: send_to_slack
-              uses: rtCamp/action-slack-notify@v2
+                file_name: 'hello.txt'
+                title: 'hello'
+                initial_comment: 'hello'
               env:
                 SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-              with:
-                SLACK_CHANNEL: general
-                SLACK_COLOR: ${{ job.status }}
-                SLACK_USERNAME: TestingName
-                SLACK_TITLE: Test
-                SLACK_MESSAGE: "Test"
+
+            # - name: send to slack
+            #   id: send_to_slack
+            #   uses: rtCamp/action-slack-notify@v2
+            #   env:
+            #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+            #   with:
+            #     SLACK_CHANNEL: general
+            #     SLACK_COLOR: ${{ job.status }}
+            #     SLACK_USERNAME: TestingName
+            #     SLACK_TITLE: Test
+            #     SLACK_MESSAGE: "Test"
