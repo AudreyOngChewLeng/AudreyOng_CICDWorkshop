@@ -12,7 +12,7 @@ jobs:
             - name: checkout test
               id: checkout_test
               uses: actions/checkout@v4
-              
+
             - name: run trivy scanner
               id: run_trivy_scanner
               uses: aquasecurity/trivy-action@master
@@ -24,25 +24,22 @@ jobs:
                 severity: 'HIGH'
                 exit-code: '1'
 
-            - name: list directory
-              id: list_directory
-              if: always()
-              run: echo "$(ls -l)"
-            
+            # - name: list directory
+            #   id: list_directory
+            #   if: always()
+            #   run: echo "$(ls -l)"
+
             - name: send trivy report
               id: send_trivy_report
               if: always()
-              uses: adrey/slack-file-upload-action@master
-              # with:
-              #   slack_token: ${{ secrets.SLACK_TOKEN }}
-              #   content: 'file content'
-              #   file_type: 'text'
-              #   file_name: 'trivy-report.txt'
-              #   title: 'trivy-report'
-              #   initial_comment: 'trivy-report'
-              with: 
-                  token: ${{ secrets.SLACK_TOKEN }}
-                  path: trivy-report.txt
+              uses: MeilCli/slack-upload-file@v3
+              with:
+                slack_token: ${{ secrets.SLACK_TOKEN }}
+                content: 'file content'
+                file_type: 'text'
+                file_name: 'trivy-report.txt'
+                title: 'trivy-report'
+                initial_comment: 'trivy-report'
 
             - name: send to slack
               id: send_to_slack
