@@ -34,7 +34,6 @@ jobs:
 
             - name: send to slack
               id: send_to_slack
-              if: failure()
               uses: rtCamp/action-slack-notify@v2
               env:
                 SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -46,6 +45,7 @@ jobs:
 
             - name: send trivy report
               id: send_trivy_report
+              if: failure()
               uses: MeilCli/slack-upload-file@v3
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
