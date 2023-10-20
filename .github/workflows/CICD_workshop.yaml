@@ -88,7 +88,7 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                 push: true
-                tags: audreyong/go-fortune:04240d724e4ef0026e2ee0e9373bc676d87b4687
+                tags: audreyong/go-fortune:df30666b0899f774f3c94756431e168cac67bd50
 
             - name: Sign image with key
               id: sign_image_with_key
