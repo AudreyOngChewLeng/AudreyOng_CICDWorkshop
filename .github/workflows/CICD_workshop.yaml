@@ -30,12 +30,11 @@ jobs:
 
             - name: list directory
               id: list_directory
-              if: always()
               run: echo "$(ls -l)"
 
             - name: send to slack
               id: send_to_slack
-              if: always()
+              if: failure()
               uses: rtCamp/action-slack-notify@v2
               env:
                 SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -47,7 +46,6 @@ jobs:
 
             - name: send trivy report
               id: send_trivy_report
-              if: always()
               uses: MeilCli/slack-upload-file@v3
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
@@ -57,17 +55,14 @@ jobs:
 
             - name: Set up QEMU
               id: set_up_qemu
-              if: always()
               uses: docker/setup-qemu-action@v3
 
             - name: Set up Docker Buildx
               id: set_up_docker_buildx
-              if: always()
               uses: docker/setup-buildx-action@v3
               
             - name: Login to Docker Hub
               id: login_to_docker_hub
-              if: always()
               uses: docker/login-action@v3
               with:
                 username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -75,7 +70,6 @@ jobs:
             
             - name: Build and push
               id: build_and_push
-              if: always()
               uses: docker/build-push-action@v5
               with:
                 push: true
