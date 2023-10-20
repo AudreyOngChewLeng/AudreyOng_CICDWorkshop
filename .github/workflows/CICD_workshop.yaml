@@ -51,7 +51,11 @@ jobs:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
                 file_path: 'trivy-report.txt'
-                initial_comment: 'Scan report by Audrey'            
+                initial_comment: 'Scan report by Audrey'    
+                
+            - name: Install Cosign
+              id: install_cosgin
+              uses: sigstore/cosign-installer@v3.1.1
 
             - name: Set up QEMU
               id: set_up_qemu
