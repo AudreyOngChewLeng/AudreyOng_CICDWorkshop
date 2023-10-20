@@ -82,16 +82,7 @@ jobs:
             - name: Sign image with key
               id: sign_image_with_key
               run: |
-                cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/cicdworkshop:${{github.sha}}
               env:
-                TAGS: ${{ steps.docker_meta.outputs.tags }}
                 COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
                 COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-                DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        
-            - name: Sign image with github
-              id: sign_image_with_github
-              env:
-                DIGEST: ${{ steps.build-and-push.outputs.digest }}
-                TAGS: ${{ steps.docker_meta.outputs.tags }}
-              run: cosign sign --yes "${TAGS}@${DIGEST}"
