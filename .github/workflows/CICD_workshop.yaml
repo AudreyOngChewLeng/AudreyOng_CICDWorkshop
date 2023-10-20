@@ -21,7 +21,7 @@ jobs:
                 ignore-unfixed: true
                 format: 'table'
                 output: 'trivy-report.txt'
-                severity: ${{ env.SEVERITY }}
+                severity: ${{ vars.SEVERITY }}
                 exit-code: '1'
 
             - name: list directory
