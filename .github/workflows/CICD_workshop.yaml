@@ -21,19 +21,16 @@ jobs:
                 ignore-unfixed: true
                 format: 'table'
                 output: 'trivy-report.txt'
-                severity: 'CRITICAL'
+                severity: ${{env.SEVERITY}}
                 exit-code: '1'
-
-            # - name: trial run
-            #   id: trial_run
-            #   run: echo "hello" > hello.txt
 
             - name: list directory
               id: list_directory
               run: echo "$(ls -l)"
 
-            - name: send to slack
-              id: send_to_slack
+            - name: send fail attempt
+              id: send_fail_attempt
+              if: failure()
               uses: rtCamp/action-slack-notify@v2
               env:
                 SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -41,7 +38,19 @@ jobs:
                 SLACK_COLOR: ${{ job.status }}
                 SLACK_USERNAME: TestingName
                 SLACK_TITLE: Image build and signed
-                SLACK_MESSAGE: "test"
+                SLACK_MESSAGE: "Failed trivy scan, see uploaded report"
+            
+            - name: send success attempt
+              id: send_success_attempt
+              if: success()
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+                SLACK_CHANNEL: general
+                SLACK_COLOR: ${{ job.status }}
+                SLACK_USERNAME: TestingName
+                SLACK_TITLE: Image build and signed
+                SLACK_MESSAGE: "Name: ONG CHEW LENG. AUDREY \n Matriculation: A0285863M \n Email: e1221675@u.nus.edu \n Git: <https://github.com/AudreyOngChewLeng/AudreyOng_CICDWorkshop> \n Image: <https://hub.docker.com/repository/docker/audreyong/go-fortune/general>"
 
             - name: send trivy report
               id: send_trivy_report
