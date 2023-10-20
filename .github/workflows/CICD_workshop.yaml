@@ -84,7 +84,7 @@ jobs:
             - name: Sign image with key
               id: sign_image_with_key
               run: |
-                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/go-fortune@sha256:${{github.sha}}
+                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/go-fortune@sha256:b83adf6cbab5e12f5cc299168ad6d5fb16eca2bd
               env:
                 COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
                 COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
