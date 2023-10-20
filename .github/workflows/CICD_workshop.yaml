@@ -79,12 +79,12 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                 push: true
-                tags: audreyong/go-fortune:b83adf6cbab5e12f5cc299168ad6d5fb16eca2bd
+                tags: audreyong/go-fortune:04240d724e4ef0026e2ee0e9373bc676d87b4687
 
             - name: Sign image with key
               id: sign_image_with_key
               run: |
-                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/go-fortune:${{github.sha}}
+                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/go-fortune@sha256:91e61f0e138801bf8439b4fc95dbfee64afeb5af00516254c32bf59e5e65e7a0
               env:
                 TAGS: ${{ steps.docker_meta.outputs.tags }}
                 COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
