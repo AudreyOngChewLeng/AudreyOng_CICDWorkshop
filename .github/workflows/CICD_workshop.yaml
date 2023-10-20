@@ -52,12 +52,12 @@ jobs:
                 channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
                 file_path: 'trivy-report.txt'
                 initial_comment: 'Scan report by Audrey'    
-                
+
             - name: Install Cosign
               id: install_cosign
               uses: sigstore/cosign-installer@v3.1.1
               with:
-                cosign-release: 'v2.1.1'
+                cosign-release: 'v2.2.0'
 
             - name: Set up QEMU
               id: set_up_qemu
