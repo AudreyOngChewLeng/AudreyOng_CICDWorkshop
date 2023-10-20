@@ -50,7 +50,7 @@ jobs:
                 SLACK_COLOR: ${{ job.status }}
                 SLACK_USERNAME: TestingName
                 SLACK_TITLE: Image build and signed
-                SLACK_MESSAGE: "Name: ONG CHEW LENG. AUDREY \n Matriculation: A0285863M \n Email: e1221675@u.nus.edu \n Git: <https://github.com/AudreyOngChewLeng/AudreyOng_CICDWorkshop> \n Image: <https://hub.docker.com/repository/docker/audreyong/go-fortune/general>"
+                SLACK_MESSAGE: "Name: ONG CHEW LENG. AUDREY \n Matriculation: A0285863M \n Email: e1221675@u.nus.edu \n Git: <https://github.com/AudreyOngChewLeng/AudreyOng_CICDWorkshop> \n Image: <https://hub.docker.com/repository/docker/audreyong/go-fortune>"
 
             - name: send trivy report
               id: send_trivy_report
