@@ -48,7 +48,7 @@ jobs:
             - name: send trivy report
               id: send_trivy_report
               if: always()
-              uses: MeilCli/slack-upload-file@v3.0.0
+              uses: MeilCli/slack-upload-file@v3
               with:
                 slack_token: ${{ secrets.SLACK_TOKEN }}
                 channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
