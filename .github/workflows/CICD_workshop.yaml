@@ -84,7 +84,9 @@ jobs:
             - name: Sign image with key
               id: sign_image_with_key
               run: |
-                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/go-fortune@sha256:ff946fe21697dc3099b96f80b434d7d9f3e52a0573fe4398
+                cosign sign --yes --key env://COSIGN_PRIVATE_KEY audreyong/go-fortune:${{github.sha}}
               env:
+                TAGS: ${{ steps.docker_meta.outputs.tags }}
                 COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
                 COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+                DIGEST: ${{ steps.build-and-push.outputs.digest }}
